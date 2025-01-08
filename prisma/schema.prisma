@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  folders   Folder[]
+  files     File[]
+  Session   Session[]
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model Folder {
+  id        String   @id @default(uuid())
+  name      String
+  path      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  files     File[]
+  parentId  String?
+  parent    Folder?  @relation("FolderToFolder", fields: [parentId], references: [id])
+  children  Folder[] @relation("FolderToFolder")
+  shareLink ShareLink?
+}
+
+model File {
+  id        String   @id @default(uuid())
+  name      String
+  size      Int
+  type      String
+  url       String?
+  path      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  folder    Folder?  @relation(fields: [folderId], references: [id])
+  folderId  String?
+}
+
+model ShareLink {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  expiresAt DateTime
+  folder    Folder   @relation(fields: [folderId], references: [id])
+  folderId  String   @unique
+  createdAt DateTime @default(now())
+}

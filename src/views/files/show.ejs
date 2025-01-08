@@ -1,0 +1,33 @@
+<%- include('../layouts/main') %>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">File Details</h4>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <strong>Name:</strong> <%= file.name %>
+                </div>
+                <div class="mb-3">
+                    <strong>Size:</strong> <%= (file.size / 1024).toFixed(2) %> KB
+                </div>
+                <div class="mb-3">
+                    <strong>Type:</strong> <%= file.type %>
+                </div>
+                <div class="mb-3">
+                    <strong>Uploaded:</strong> <%= file.createdAt.toLocaleString() %>
+                </div>
+                <div class="mt-4">
+                    <a href="<%= file.url %>" class="btn btn-primary" download>Download</a>
+                    <form action="/files/<%= file.id %>/delete" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-danger ms-2" onclick="return confirm('Are you sure?')">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

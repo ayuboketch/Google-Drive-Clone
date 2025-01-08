@@ -1,0 +1,101 @@
+<%- include('../layouts/main') %>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2><%= folder.name %></h2>
+            <div>
+                <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#uploadFileModal">
+                    Upload File
+                </button>
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#shareFolderModal">
+                    Share Folder
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>Files</h4>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Size</th>
+                        <th>Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% folder.files.forEach(function(file) { %>
+                        <tr>
+                            <td><a href="/files/<%= file.id %>"><%= file.name %></a></td>
+                            <td><%= (file.size / 1024).toFixed(2) %> KB</td>
+                            <td><%= file.type %></td>
+                            <td>
+                                <a href="<%= file.url %>" class="btn btn-primary btn-sm" download>Download</a>
+                                <form action="/files/<%= file.id %>/delete" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Upload File Modal -->
+<div class="modal fade" id="uploadFileModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload File</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/files/upload" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="hidden" name="folderId" value="<%= folder.id %>">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Choose File</label>
+                        <input type="file" class="form-control" id="file" name="file" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Share Folder Modal -->
+<div class="modal fade" id="shareFolderModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Share Folder</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="/share/folders/<%= folder.id %>" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="duration" class="form-label">Share Duration (days)</label>
+                        <input type="number" class="form-control" id="duration" name="duration" required min="1">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Generate Link</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
