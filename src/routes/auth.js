@@ -1,7 +1,7 @@
-const express = require('express');
-const passport = require('passport');
-const bcrypt = require('bcryptjs');
-const { PrismaClient } = require('@prisma/client');
+import express from 'express';
+import passport from 'passport';
+import bcrypt from 'bcryptjs';
+import { PrismaClient } from '@prisma/client';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -46,4 +46,5 @@ router.get('/logout', (req, res) => {
   res.redirect('/login');
 });
 
-module.exports = router;
+// Change to ES module export
+export default router;

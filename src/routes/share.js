@@ -1,6 +1,6 @@
-const express = require('express');
-const { PrismaClient } = require('@prisma/client');
-const { isAuthenticated } = require('../middleware/auth');
+import express from 'express';
+import { PrismaClient } from '@prisma/client';
+import { isAuthenticated } from '../middleware/auth.js';
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -64,4 +64,5 @@ router.get('/:token', async (req, res) => {
   res.render('share/show', { folder: shareLink.folder });
 });
 
-module.exports = router;
+// Change to ES module export
+export default router;

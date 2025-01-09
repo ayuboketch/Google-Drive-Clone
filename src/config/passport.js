@@ -1,6 +1,6 @@
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcryptjs');
-const { PrismaClient } = require('@prisma/client');
+import { Strategy as LocalStrategy } from 'passport-local';
+import bcrypt from 'bcryptjs';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -47,4 +47,5 @@ function configurePassport(passport) {
   });
 }
 
-module.exports = { configurePassport };
+// Change to ES module export
+export { configurePassport };

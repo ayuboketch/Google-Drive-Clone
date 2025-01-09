@@ -1,16 +1,16 @@
-const express = require('express');
-const multer = require('multer');
-const path = require('path');
-const { createClient } = require('@supabase/supabase-js');
-const { PrismaClient } = require('@prisma/client');
-const { isAuthenticated } = require('../middleware/auth');
+import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import { createClient } from '@supabase/supabase-js';
+import { PrismaClient } from '@prisma/client';
+import { isAuthenticated } from '../middleware/auth.js';
 
 const router = express.Router();
 const prisma = new PrismaClient();
 
 const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
+  process.env.VITE_SUPABASE_URL,
+  process.env.VITE_SUPABASE_ANON_KEY
 );
 
 const storage = multer.memoryStorage();
@@ -91,4 +91,5 @@ router.post('/:id/delete', isAuthenticated, async (req, res) => {
   res.redirect('/folders');
 });
 
-module.exports = router;
+// Change to ES module export
+export default router;

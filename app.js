@@ -1,7 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import session from 'express-session';
 import passport from 'passport';
-import { PrismaSessionStore } from 'connect-prisma-session';
 import { PrismaClient } from '@prisma/client';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -10,12 +11,16 @@ import authRoutes from './src/routes/auth.js';
 import folderRoutes from './src/routes/folders.js';
 import fileRoutes from './src/routes/files.js';
 import shareRoutes from './src/routes/share.js';
+import { PrismaSessionStore } from '@quixo3/prisma-session-store'; // Importing PrismaSessionStore
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const prisma = new PrismaClient();
 const app = express();
+
+// Log the DATABASE_URL for debugging
+console.log('DATABASE_URL:', process.env.DATABASE_URL);
 
 // View engine setup
 app.set('view engine', 'ejs');
