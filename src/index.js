@@ -1,26 +1,26 @@
-const express = require('express');
-const session = require('express-session');
-const passport = require('passport');
-const { PrismaSessionStore } = require('connect-prisma-session');
-const { PrismaClient } = require('@prisma/client');
-const path = require('path');
-const { configurePassport } = require('./config/passport');
-const authRoutes = require('./routes/auth');
-const folderRoutes = require('./routes/folders');
-const fileRoutes = require('./routes/files');
-const shareRoutes = require('./routes/share');
+import express from 'express';
+import session from 'express-session';
+import passport from 'passport';
+import { PrismaSessionStore } from 'connect-prisma-session';
+import { PrismaClient } from '@prisma/client';
+import path from 'path';
+import { configurePassport } from './config/passport.js';
+import authRoutes from './routes/auth.js';
+import folderRoutes from './routes/folders.js';
+import fileRoutes from './routes/files.js';
+import shareRoutes from './routes/share.js';
 
 const prisma = new PrismaClient();
 const app = express();
 
 // View engine setup
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(process.cwd(), 'views'));
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(process.cwd(), 'public')));
 
 // Session setup
 app.use(
